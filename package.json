@@ -1,0 +1,30 @@
+{
+  "name": "localstorage-monorepo",
+  "version": "1.0.0",
+  "description": "로컬스토리지 관련 도구들의 모노레포",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=localstorage-devtool",
+    "build": "npm run build --workspaces",
+    "build:devtool": "npm run build --workspace=localstorage-devtool",
+    "build:viewer-toolbar": "npm run build --workspace=localstorage-viewer-toolbar",
+    "lint": "npm run lint --workspaces",
+    "lint:devtool": "npm run lint --workspace=localstorage-devtool",
+    "lint:viewer-toolbar": "npm run lint --workspace=localstorage-viewer-toolbar",
+    "clean": "npm run clean --workspaces",
+    "clean:devtool": "rm -rf packages/localstorage-devtool/dist",
+    "clean:viewer-toolbar": "rm -rf packages/localstorage-viewer-toolbar/dist"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.30.1",
+    "eslint": "^9.30.1",
+    "globals": "^16.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+}
