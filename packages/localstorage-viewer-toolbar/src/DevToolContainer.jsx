@@ -54,7 +54,7 @@ export default function DevToolContainer() {
       {isOpen ? (
         <div
           ref={popupRef}
-          className="fixed bottom-8 right-8 w-1/3 max-h-[80vh] bg-white rounded-xl shadow-2xl z-50 flex flex-col overflow-hidden border border-gray-200"
+          className="fixed bottom-8 right-8 max-h-[80vh] bg-white rounded-xl shadow-2xl z-50 flex flex-col overflow-hidden border border-gray-200"
         >
           <div className="flex justify-between items-center bg-gray-800 text-white px-4 py-2 text-sm">
             <span className="font-bold">LocalStorage Viewer</span>

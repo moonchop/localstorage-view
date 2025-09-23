@@ -31,6 +31,7 @@ export default function Toolbar({ search, setSearch, reload }) {
     <div className="flex items-center gap-2 mb-4">
       <input
         type="text"
+        id="searchInput"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         placeholder="🔍 Keyword Search"
