@@ -8,8 +8,9 @@ export default defineConfig({
     lib: {
       entry: "./src/index.js",
       name: "LocalStorageViewerToolbar",
-      fileName: "index",
-      formats: ["es", "cjs"],
+      fileName: (format) => `index.${format}.js`,
+      // fileName: "index",
+      // formats: ["es", "cjs"],
     },
     rollupOptions: {
       external: ["react", "react-dom"],

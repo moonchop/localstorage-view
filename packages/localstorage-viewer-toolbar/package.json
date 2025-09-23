@@ -1,11 +1,18 @@
 {
   "type": "module",
-  "name": "@localstorage/viewer-toolbar",
+  "name": "localstorage-viewer-toolbar",
   "version": "1.0.0",
-  "description": "React 기반 로컬스토리지 뷰어 툴바 컴포넌트",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "description": "React-based Local Storage Viewer Toolbar Component",
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.es.js",
+  "types": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js"
+    },
+    "./style.css": "./dist/localstorage-viewer-toolbar.css"
+  },
   "files": [
     "dist"
   ],
