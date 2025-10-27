@@ -9,9 +9,47 @@ export default function DevToolContainer() {
   const popupRef = useRef(null); // 팝업 영역 참조
 
   const loadStorage = () => {
-    const items = Object.entries(localStorage);
+    const items = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key) {
+        items.push([key, localStorage.getItem(key)]);
+      }
+    }
     setStorageData(items);
   };
+
+  useEffect(() => {
+    const originalSetItem = localStorage.setItem;
+
+    localStorage.setItem = function (key, value) {
+      const oldValue = localStorage.getItem(key);
+      originalSetItem.apply(this, arguments);
+      const newValue = String(value); // Ensure value is a string, as it would be in localStorage
+
+      if (oldValue !== newValue) {
+        const historyKey = "__localStorage_history__";
+        let history = JSON.parse(sessionStorage.getItem(historyKey) || "{}");
+        if (!history[key]) {
+          history[key] = [];
+        }
+        // Keep history clean: only store if there was a previous value
+        if (oldValue !== null) {
+          history[key].push({
+            timestamp: new Date().toISOString(),
+            oldValue,
+            newValue,
+          });
+          sessionStorage.setItem(historyKey, JSON.stringify(history));
+        }
+      }
+    };
+
+    // Cleanup on unmount
+    return () => {
+      localStorage.setItem = originalSetItem;
+    };
+  }, []);
 
   useEffect(() => {
     loadStorage();

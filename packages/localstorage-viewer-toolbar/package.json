@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "localstorage-viewer-toolbar",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "React-based Local Storage Viewer Toolbar Component",
   "main": "./dist/index.umd.js",
   "module": "./dist/index.es.js",
@@ -26,6 +26,7 @@
   "license": "MIT",
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",
+    "jsdiff": "^1.1.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
