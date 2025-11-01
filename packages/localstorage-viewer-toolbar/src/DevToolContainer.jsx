@@ -43,6 +43,7 @@ export default function DevToolContainer() {
             newValue,
           });
           sessionStorage.setItem(historyKey, JSON.stringify(history));
+          window.dispatchEvent(new Event("localstorage-history-update"));
         }
       }
     };

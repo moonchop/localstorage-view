@@ -5,10 +5,20 @@ export default function HistoryViewer({ storageKey }) {
   const [history, setHistory] = useState([]);
 
   useEffect(() => {
-    const fullHistory = JSON.parse(
-      sessionStorage.getItem("__localStorage_history__") || "{}"
-    );
-    setHistory(fullHistory[storageKey] || []);
+    const fetchHistory = () => {
+      const fullHistory = JSON.parse(
+        sessionStorage.getItem("__localStorage_history__") || "{}"
+      );
+      setHistory(fullHistory[storageKey] || []);
+    };
+
+    fetchHistory();
+
+    window.addEventListener("localstorage-history-update", fetchHistory);
+
+    return () => {
+      window.removeEventListener("localstorage-history-update", fetchHistory);
+    };
   }, [storageKey]);
 
   if (history.length === 0) {
