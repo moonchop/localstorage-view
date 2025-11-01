@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from "react";
+import { ResizableBox } from "react-resizable";
+import "react-resizable/css/styles.css";
 import Toolbar from "./Toolbar";
 import StorageTable from "./StorageTable";
 
@@ -90,28 +92,39 @@ export default function DevToolContainer() {
   return (
     <>
       {isOpen ? (
-        <div
-          ref={popupRef}
-          className="fixed bottom-8 right-8 max-h-[80vh] bg-white rounded-xl shadow-2xl z-50 flex flex-col overflow-hidden border border-gray-200"
-        >
-          <div className="flex justify-between items-center bg-gray-800 text-white px-4 py-2 text-sm">
-            <span className="font-bold">LocalStorage Viewer</span>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="text-white text-xl leading-none cursor-pointer"
-              aria-label="Close"
+        <div className="fixed bottom-8 right-8 z-50">
+          <ResizableBox
+            width={600}
+            height={400}
+            minConstraints={[300, 200]}
+            maxConstraints={[1200, 800]}
+            className="overflow-hidden max-h-[80vh] bg-white rounded-xl shadow-2xl flex flex-col border border-gray-200"
+            resizeHandles={['s', 'w', 'e', 'n', 'sw', 'nw', 'se', 'ne']}
+          >
+            <div
+              ref={popupRef}
+              className="w-full h-full flex flex-col overflow-hidden"
             >
-              ×
-            </button>
-          </div>
-          <div className="p-4 overflow-auto text-sm font-mono">
-            <Toolbar
-              search={search}
-              setSearch={setSearch}
-              reload={loadStorage}
-            />
-            <StorageTable data={filtered} reload={loadStorage} />
-          </div>
+              <div className="flex justify-between items-center bg-gray-800 text-white px-4 py-2 text-sm">
+                <span className="font-bold">LocalStorage Viewer</span>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="text-white text-xl leading-none cursor-pointer"
+                  aria-label="Close"
+                >
+                  ×
+                </button>
+              </div>
+              <div className="p-4 overflow-auto text-sm font-mono flex-1">
+                <Toolbar
+                  search={search}
+                  setSearch={setSearch}
+                  reload={loadStorage}
+                />
+                <StorageTable data={filtered} reload={loadStorage} />
+              </div>
+            </div>
+          </ResizableBox>
         </div>
       ) : (
         <button
