@@ -61,12 +61,39 @@ export default function DevToolContainer() {
     const onStorageChange = () => loadStorage();
     const onCustomUpdate = () => loadStorage();
 
+    const handleDeleteHistoryEntry = (event) => {
+      const { storageKey, timestamp } = event.detail;
+      const historyKey = "__localStorage_history__";
+      let history = JSON.parse(sessionStorage.getItem(historyKey) || "{}");
+
+      if (history[storageKey]) {
+        history[storageKey] = history[storageKey].filter(
+          (entry) => entry.timestamp !== timestamp
+        );
+
+        if (history[storageKey].length === 0) {
+          delete history[storageKey];
+        }
+
+        sessionStorage.setItem(historyKey, JSON.stringify(history));
+        window.dispatchEvent(new Event("localstorage-history-update"));
+      }
+    };
+
     window.addEventListener("storage", onStorageChange);
     window.addEventListener("localstorage-update", onCustomUpdate);
+    window.addEventListener(
+      "delete-localstorage-history",
+      handleDeleteHistoryEntry
+    );
 
     return () => {
       window.removeEventListener("storage", onStorageChange);
       window.removeEventListener("localstorage-update", onCustomUpdate);
+      window.removeEventListener(
+        "delete-localstorage-history",
+        handleDeleteHistoryEntry
+      );
     };
   }, []);
 
