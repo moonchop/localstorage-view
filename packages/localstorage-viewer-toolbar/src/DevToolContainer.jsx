@@ -29,23 +29,23 @@ export default function DevToolContainer() {
       originalSetItem.apply(this, arguments);
       const newValue = String(value); 
 
-      if (oldValue !== newValue) {
-        const historyKey = "__localStorage_history__";
-        let history = JSON.parse(sessionStorage.getItem(historyKey) || "{}");
-        if (!history[key]) {
-          history[key] = [];
-        }
-        if (oldValue !== null) {
-          history[key].push({
-            timestamp: new Date().toISOString(),
-            oldValue,
-            newValue,
-          });
-          sessionStorage.setItem(historyKey, JSON.stringify(history));
-          window.dispatchEvent(new Event("localstorage-history-update"));
-        }
-      }
-    };
+              if (oldValue !== newValue) {
+                window.dispatchEvent(new Event("localstorage-update")); 
+                const historyKey = "__localStorage_history__";
+                let history = JSON.parse(sessionStorage.getItem(historyKey) || "{}");
+                if (!history[key]) {
+                  history[key] = [];
+                }
+                if (oldValue !== null) {
+                  history[key].push({
+                    timestamp: new Date().toISOString(),
+                    oldValue,
+                    newValue,
+                  });
+                  sessionStorage.setItem(historyKey, JSON.stringify(history));
+                  window.dispatchEvent(new Event("localstorage-history-update"));
+                }
+              }    };
 
     return () => {
       localStorage.setItem = originalSetItem;
