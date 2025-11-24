@@ -1,4 +1,4 @@
-import "./index.css"; // Tailwind CSS 포함
+
 import DevToolContainer from "./DevToolContainer";
 import { setLocalStorageItem, getLocalStorageItem } from "./util";
 

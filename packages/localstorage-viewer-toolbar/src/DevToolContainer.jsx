@@ -1,15 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import { ResizableBox } from "react-resizable";
-import "react-resizable/css/styles.css";
 import Toolbar from "./Toolbar";
 import StorageTable from "./StorageTable";
+import ShadowWrapper from "./ShadowWrapper";
 
 export default function DevToolContainer() {
   const [search, setSearch] = useState("");
   const [storageData, setStorageData] = useState([]);
-  const [isOpen, setIsOpen] = useState(false); // 팝업 열림 상태
-  const popupRef = useRef(null); // 팝업 영역 참조
-
+  const [isOpen, setIsOpen] = useState(false); 
+  const popupRef = useRef(null); 
+  
   const loadStorage = () => {
     const items = [];
     for (let i = 0; i < localStorage.length; i++) {
@@ -27,7 +27,7 @@ export default function DevToolContainer() {
     localStorage.setItem = function (key, value) {
       const oldValue = localStorage.getItem(key);
       originalSetItem.apply(this, arguments);
-      const newValue = String(value); // Ensure value is a string, as it would be in localStorage
+      const newValue = String(value); 
 
       if (oldValue !== newValue) {
         const historyKey = "__localStorage_history__";
@@ -35,7 +35,6 @@ export default function DevToolContainer() {
         if (!history[key]) {
           history[key] = [];
         }
-        // Keep history clean: only store if there was a previous value
         if (oldValue !== null) {
           history[key].push({
             timestamp: new Date().toISOString(),
@@ -48,7 +47,6 @@ export default function DevToolContainer() {
       }
     };
 
-    // Cleanup on unmount
     return () => {
       localStorage.setItem = originalSetItem;
     };
@@ -57,7 +55,6 @@ export default function DevToolContainer() {
   useEffect(() => {
     loadStorage();
 
-    // 다른 탭이나 같은 탭에서의 업데이트를 모두 처리
     const onStorageChange = () => loadStorage();
     const onCustomUpdate = () => loadStorage();
 
@@ -101,24 +98,8 @@ export default function DevToolContainer() {
     ([key, value]) => key.includes(search) || value.includes(search)
   );
 
-  // 팝업 외부 클릭 감지
-  // useEffect(() => {
-  //   const handleClickOutside = (event) => {
-  //     if (popupRef.current && !popupRef.current.contains(event.target)) {
-  //       setIsOpen(false);
-  //     }
-  //   };
-
-  //   if (isOpen) {
-  //     document.addEventListener("mousedown", handleClickOutside);
-  //   }
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, [isOpen]);
-
   return (
-    <>
+    <ShadowWrapper>
       {isOpen ? (
         <div className="fixed bottom-8 right-8 z-50">
           <ResizableBox
@@ -160,10 +141,9 @@ export default function DevToolContainer() {
           className="fixed bottom-8 right-8 w-auto h-14 px-2 bg-blue-700 text-white rounded shadow-lg flex items-center justify-center z-50"
           aria-label="Open DevTool"
         >
-          {/* 아이콘이나 텍스트 */}
           Localstroage Viewer
         </button>
       )}
-    </>
+    </ShadowWrapper>
   );
 }
